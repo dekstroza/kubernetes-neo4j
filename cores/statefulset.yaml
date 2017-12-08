@@ -2,6 +2,7 @@ apiVersion: "apps/v1beta1"
 kind: StatefulSet
 metadata:
   name: neo4j-core
+  namespace: neo4j
 spec:
   serviceName: neo4j
   replicas: 3
@@ -25,7 +26,7 @@ spec:
           - name: NEO4J_causal__clustering_discovery__type
             value: DNS
           - name: NEO4J_causal__clustering_initial__discovery__members
-            value: "neo4j.default.svc.cluster.local:5000"
+            value: "neo4j.neo4j.svc.cluster.local:5000"
           - name: NEO4J_ACCEPT_LICENSE_AGREEMENT
             value: "yes"
         command:
@@ -61,6 +62,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
+        storageClassName: cinder-persistent
         resources:
           requests:
             storage: "10Gi"
